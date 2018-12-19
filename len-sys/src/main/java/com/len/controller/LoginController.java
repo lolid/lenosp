@@ -11,6 +11,7 @@ import com.len.util.CustomUsernamePasswordToken;
 import com.len.util.VerifyCodeUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -81,7 +82,7 @@ public class LoginController {
      */
     @ApiOperation(value = "/login", httpMethod = "POST", notes = "登录method")
     @PostMapping(value = "/login")
-    public String login(SysUser user, Model model, String rememberMe, HttpServletRequest request) {
+    public String login(SysUser user, Model model, boolean rememberMe, HttpServletRequest request) {
         String codeMsg = (String) request.getAttribute("shiroLoginFailure");
         if ("code.error".equals(codeMsg)) {
             model.addAttribute("message", "验证码错误");
@@ -89,6 +90,8 @@ public class LoginController {
         }
         CustomUsernamePasswordToken token = new CustomUsernamePasswordToken(user.getUsername().trim(),
                 user.getPassword(), "UserLogin");
+
+        token.setRememberMe(rememberMe);
         Subject subject = ShiroUtil.getSubject();
         String msg = null;
         try {

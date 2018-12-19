@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>len-脚手架</title>
+  <title>layui</title>
   <link rel="stylesheet" href="${re.contextPath}/plugin/plugins/layui/css/layui.css" media="all" />
   <link rel="stylesheet" href="${re.contextPath}/plugin/plugins/font-awesome/css/font-awesome.min.css" media="all" />
   <link rel="stylesheet" href="${re.contextPath}/plugin/build/css/app.css" media="all" />
@@ -19,7 +19,7 @@
 <body class="kit-theme">
 <div class="layui-layout layui-layout-admin kit-layout-admin">
   <div class="layui-header">
-    <div class="layui-logo">len-脚手架</div>
+    <div class="layui-logo">layui</div>
     <div class="layui-logo kit-logo-mobile"></div>
     <div class="layui-hide-xs">
     <ul class="layui-nav layui-layout-left kit-nav">
@@ -101,7 +101,6 @@
   <div class="layui-footer">
   <!-- 底部固定区域 -->
   2017 &copy;
-  <a target="_blank" href="https://my.oschina.net/u/3312115/blog">开源中国博客</a> 由zxm倾心打造的一款快速开发脚手架 <#--技术交流请联系本人-154040976@qq.com-->
 </div>
 </div>
 <script src="${re.contextPath}/plugin/plugins/layui/layui.js"></script>

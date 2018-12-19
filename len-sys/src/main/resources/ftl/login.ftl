@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>后台登录</title>
+    <title>登录页面</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -20,13 +20,11 @@
 <body class="login-bg">
 
 <div class="login">
-    <div class="message">len-脚手架</div>
-    <div id="darkbannerwrap"></div>
 
     <form method="post" action="${re.contextPath}/login" class="layui-form" >
-        <input name="username" placeholder="用户名" autocomplete="off"  type="text" lay-verify="username" class="layui-input" >
+        <input name="username" placeholder="用户名" autocomplete="on"  type="text" lay-verify="username" class="layui-input" >
         <hr class="hr15">
-        <input name="password" lay-verify="password" placeholder="密码" autocomplete="off"  type="password" class="layui-input">
+        <input name="password" lay-verify="password" placeholder="密码" autocomplete="on"  type="password" class="layui-input">
         <hr class="hr15">
         <div  class="layui-inline">
             <label class="layui-form-label" style="width:40px;padding: 9px 0px;">验证码&nbsp;</label>
@@ -38,10 +36,10 @@
             </div>
 
         </div>
-        <#--<div>-->
-        <#--<label class="layui-form-label" style="width:40px;padding: 9px 0px;">记住我</label>  由于不好验证 目前去掉-->
-            <#--<input type="checkbox"   name="rememberMe" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">-->
-        <#--</div>-->
+        <div>
+        <label class="layui-form-label" style="width:40px;padding: 9px 0px;">记住我</label>
+            <input type="checkbox"   name="rememberMe" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+        </div>
         <hr class="hr15">
         <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
         <hr class="hr20" >
