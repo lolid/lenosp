@@ -421,12 +421,17 @@ public class UserLeaveController extends BaseController {
         e.setQuality(19);
         e.start(resp.getOutputStream());
 
-        BufferedImage current = ImageIO.read(imageStream); // 读入需要播放的jpg文件
-        e.addFrame(current);  //添加到帧中
-
-        e.setDelay(200); //设置播放的延迟时间
-        BufferedImage nocurrent = ImageIO.read(imageNoCurrentStream); // 读入需要播放的jpg文件
-        e.addFrame(nocurrent);  //添加到帧中
+        // 读入需要播放的jpg文件
+        BufferedImage current = ImageIO.read(imageStream);
+        //添加到帧中
+        e.addFrame(current);
+        //设置播放的延迟时间
+        e.setDelay(200);
+        //设置播放的延迟时间
+        // 读入需要播放的jpg文件
+        BufferedImage nocurrent = ImageIO.read(imageNoCurrentStream);
+        //添加到帧中
+        e.addFrame(nocurrent);
 
         e.finish();
 
@@ -537,22 +542,28 @@ public class UserLeaveController extends BaseController {
             ProcessDefinitionEntity processDefinitionEntity,
             List<HistoricActivityInstance> historicActivityInstances) {
 
-        List<String> highFlows = new ArrayList<String>();// 用以保存高亮的线flowId
-        for (int i = 0; i < historicActivityInstances.size() - 1; i++) {// 对历史流程节点进行遍历
+        // 用以保存高亮的线flowId
+        List<String> highFlows = new ArrayList();
+        // 对历史流程节点进行遍历
+        for (int i = 0; i < historicActivityInstances.size() - 1; i++) {
+            // 得到节点定义的详细信息
             ActivityImpl activityImpl = processDefinitionEntity
                     .findActivity(historicActivityInstances.get(i)
-                            .getActivityId());// 得到节点定义的详细信息
-            List<ActivityImpl> sameStartTimeNodes = new ArrayList<ActivityImpl>();// 用以保存后需开始时间相同的节点
+                            .getActivityId());
+            // 用以保存后需开始时间相同的节点
+            List<ActivityImpl> sameStartTimeNodes = new ArrayList<>();
             ActivityImpl sameActivityImpl1 = processDefinitionEntity
                     .findActivity(historicActivityInstances.get(i + 1)
                             .getActivityId());
             // 将后面第一个节点放在时间相同节点的集合里
             sameStartTimeNodes.add(sameActivityImpl1);
+            // 后续第一个节点
             for (int j = i + 1; j < historicActivityInstances.size() - 1; j++) {
+                // 后续第二个节点
                 HistoricActivityInstance activityImpl1 = historicActivityInstances
-                        .get(j);// 后续第一个节点
+                        .get(j);
                 HistoricActivityInstance activityImpl2 = historicActivityInstances
-                        .get(j + 1);// 后续第二个节点
+                        .get(j + 1);
                 if (activityImpl1.getStartTime().equals(
                         activityImpl2.getStartTime())) {
                     // 如果第一个节点和第二个节点开始时间相同保存

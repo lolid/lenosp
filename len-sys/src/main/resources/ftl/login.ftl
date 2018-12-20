@@ -22,14 +22,29 @@
 <div class="login">
 
     <form method="post" action="${re.contextPath}/login" class="layui-form" >
-        <input name="username" placeholder="用户名" autocomplete="on"  type="text" lay-verify="username" class="layui-input" >
-        <hr class="hr15">
-        <input name="password" lay-verify="password" placeholder="密码" autocomplete="on"  type="password" class="layui-input">
-        <hr class="hr15">
+        <fieldset class="layui-elem-field layui-field-title" style="margin: 20px;text-align: center">
+            <legend>系统登录</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width:40px;padding: 9px 0px;">用户名&nbsp;</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <#--<input name="username" placeholder="用户名" autocomplete="on"  type="text" lay-verify="username" class="layui-input" >-->
+        <#--<hr class="hr15">-->
+        <#--<input name="password" lay-verify="password" placeholder="密码" autocomplete="on"  type="password" class="layui-input">-->
+        <#--<hr class="hr15">-->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width:40px;padding: 9px 0px;">密码&nbsp;&nbsp;</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
         <div  class="layui-inline">
             <label class="layui-form-label" style="width:40px;padding: 9px 0px;">验证码&nbsp;</label>
                <div class="layui-input-inline">
-                     <input type="text" name="code" style="width:150px;height:35px;" autocomplete="off" lay-verify="code"   class="layui-input">
+                     <input type="text" name="code" style="width:190px;height:35px;" autocomplete="off" lay-verify="code"   class="layui-input">
               </div>
             <div class="layui-input-inline">
                 <img src="" id="code">
@@ -37,11 +52,11 @@
 
         </div>
         <div>
-        <label class="layui-form-label" style="width:40px;padding: 9px 0px;">记住我</label>
+        <label class="layui-form-label" style="width:40px;padding: 9px 0px;">记住我&nbsp;</label>
             <input type="checkbox"   name="rememberMe" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
         </div>
         <hr class="hr15">
-        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <input value="登录" lay-submit lay-filter="login" style="width:60%;display:block;margin:0 auto" type="submit">
         <hr class="hr20" >
     </form>
 </div>
