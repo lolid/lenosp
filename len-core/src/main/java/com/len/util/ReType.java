@@ -50,7 +50,7 @@ public class ReType implements Serializable{
    * @param node 绑定节点字符串 这样可以更加灵活
    * @return
    */
-  public static String jsonStrng(long count,List<?> data,Map<String, Map<String,Object>> map,String node){
+  public static String jsonString(long count,List<?> data,Map<String, Map<String,Object>> map,String node){
     JSONArray jsonArray=JSONArray.parseArray(JSON.toJSONString(data));
     JSONObject object=new JSONObject();
     for(int i=0;i<jsonArray.size();i++){

@@ -244,6 +244,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, String> impleme
         }
         currentUser.setCurrentRoleList(currentRoleList);
         currentUser.setCurrentMenuList(currentMenuList);
-        session.setAttribute("curentUser", currentUser);
+        session.setAttribute("currentUser", currentUser);
     }
 }

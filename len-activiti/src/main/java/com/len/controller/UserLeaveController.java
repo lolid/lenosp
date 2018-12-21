@@ -132,19 +132,23 @@ public class UserLeaveController extends BaseController {
         List<UserLeave> tList = null;
         Page<UserLeave> tPage = PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         try {
+            //分页查找请假列表
             tList = leaveService.selectListByPage(userLeave);
             for (UserLeave leave : tList) {
+                //获取流程实例
                 ProcessInstance instance = runtimeService.createProcessInstanceQuery()
                         .processInstanceId(leave.getProcessInstanceId()).singleResult();
                 //保证运行ing
                 if (instance != null) {
                     Task task = this.taskService.createTaskQuery().processInstanceId(leave.getProcessInstanceId()).singleResult();
+                    //设置任务名称
                     leave.setTaskName(task.getName());
                 }
             }
         } catch (MyException e) {
             e.printStackTrace();
         }
+        //返回类型
         return new ReType(tPage.getTotal(), tList);
     }
 
@@ -161,24 +165,27 @@ public class UserLeaveController extends BaseController {
                 .processInstanceId(processId).singleResult();
         //保证运行ing
         List<LeaveOpinion> leaveList = null;
-        List<HistoricActivityInstance> historicActivityInstanceList = new ArrayList<>();
+        //List<HistoricActivityInstance> historicActivityInstanceList = new ArrayList<>();
         if (instance != null) {
+            //存在该实例
             Task task = this.taskService.createTaskQuery().processInstanceId(processId).singleResult();
             Map<String, Object> variables = taskService.getVariables(task.getId());
             Object o = variables.get(leaveOpinionList);
             if (o != null) {
-        /*获取历史审核信息*/
+                /*获取历史审核信息*/
                 leaveList = (List<LeaveOpinion>) o;
             }
         } else {
+            //不存在该实例 尝试查找历史被更新的流程
             leaveList = new ArrayList<>();
             List<HistoricDetail> list = historyService.createHistoricDetailQuery().
                     processInstanceId(processId).list();
             HistoricVariableUpdate variable = null;
+
             for (HistoricDetail historicDetail : list) {
                 variable = (HistoricVariableUpdate) historicDetail;
                 String variableName = variable.getVariableName();
-                if (leaveOpinionList.equals(variable.getVariableName())) {
+                if (leaveOpinionList.equals(variableName)) {
                     leaveList.clear();
                     leaveList.addAll((List<LeaveOpinion>) variable.getValue());
                 }
@@ -188,11 +195,21 @@ public class UserLeaveController extends BaseController {
         return "/act/leave/leaveDetail";
     }
 
+    /**
+     * 调到添加请假流程
+     * @return
+     */
     @GetMapping("addLeave")
     public String addLeave() {
         return "/act/leave/add-leave";
     }
 
+    /**
+     * 跳转更新请假任务
+     * @param model
+     * @param taskId
+     * @return
+     */
     @GetMapping("updateLeave/{taskId}")
     public String updateLeave(Model model, @PathVariable String taskId) {
         Map<String, Object> variables = taskService.getVariables(taskId);
@@ -203,23 +220,36 @@ public class UserLeaveController extends BaseController {
         return "/act/leave/update-leave";
     }
 
+    /**
+     * 更新任务方法
+     * @param leave
+     * @param taskId
+     * @param id
+     * @param flag
+     * @return
+     */
     @PostMapping("updateLeave/updateLeave/{taskId}/{id}/{flag}")
     @ResponseBody
     public JsonUtil updateLeave(UserLeave leave, @PathVariable String taskId, @PathVariable String id, @PathVariable boolean flag) {
+
         JsonUtil j = new JsonUtil();
+
         try {
+            //数据库中历史流程
             UserLeave oldLeave = leaveService.selectByPrimaryKey(leave.getId());
+            //覆盖原有流程
             BeanUtil.copyNotNullBean(leave, oldLeave);
             leaveService.updateByPrimaryKeySelective(oldLeave);
 
-            Map<String, Object> variables = taskService.getVariables(taskId);
+            //Map<String, Object> variables = taskService.getVariables(taskId);
 //            UserLeave userLeave = (UserLeave) variables.get("userLeave");
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>(4);
             if (flag) {
                 map.put("flag", true);
             } else {
                 map.put("flag", false);
             }
+            //更新原有
             taskService.complete(taskId, map);
             j.setMsg("保存成功");
         } catch (MyException e) {
@@ -230,34 +260,48 @@ public class UserLeaveController extends BaseController {
         return j;
     }
 
-
+    /**
+     * 添加请假流程
+     * @param model
+     * @param userLeave
+     * @return
+     */
     @PostMapping("addLeave")
     @ResponseBody
     public JsonUtil addLeave(Model model, UserLeave userLeave) {
-        JsonUtil j = new JsonUtil();
+        JsonUtil json = new JsonUtil();
         if (userLeave == null) {
             return JsonUtil.error("获取数据失败");
         }
+        // TODO 设置请假时间
         userLeave.setDays(3);
         CurrentUser user = CommonUtil.getUser();
         userLeave.setUserId(user.getId());
         userLeave.setUserName(user.getUsername());
-        userLeave.setProcessInstanceId("2018");//模拟数据
+
+        //TODO 设置流程实例ID
+        userLeave.setProcessInstanceId("2018");
         leaveService.insertSelective(userLeave);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>(2);
+        //存放Url
         userLeave.setUrlpath("/leave/readOnlyLeave/"+userLeave.getId());
-        map.put("baseTask",(BaseTask) userLeave);
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process_leave", map);
+
+        resultMap.put("baseTask", userLeave);
+
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("process_leave", resultMap);
         userLeave.setProcessInstanceId(processInstance.getId());
-        UserLeave userLeave1 = leaveService.selectByPrimaryKey(userLeave.getId());
-        BeanUtil.copyNotNullBean(userLeave, userLeave1);
-        userLeave1.setUrlpath("/leave/readOnlyLeave/"+userLeave.getId());
-        leaveService.updateByPrimaryKeySelective(userLeave1);
-        if (processInstance == null) {
+
+        UserLeave oldUserLeave = leaveService.selectByPrimaryKey(userLeave.getId());
+        BeanUtil.copyNotNullBean(userLeave, oldUserLeave);
+
+        oldUserLeave.setUrlpath("/leave/readOnlyLeave/"+userLeave.getId());
+        leaveService.updateByPrimaryKeySelective(oldUserLeave);
+
+        if (processInstance.getId() == null) {
             return JsonUtil.error("未识别key");
         }
-        j.setMsg("请假申请成功");
-        return j;
+        json.setMsg("请假申请成功");
+        return json;
     }
 
     @GetMapping("readOnlyLeave/{billId}")
@@ -336,7 +380,7 @@ public class UserLeaveController extends BaseController {
             tasks.add(taskEntity);
             taskSet.add(taskId);
         }
-        return ReType.jsonStrng(taskList.size(), tasks, mapMap, "id");
+        return ReType.jsonString(taskList.size(), tasks, mapMap, "id");
     }
 
     @GetMapping("agent/{id}")

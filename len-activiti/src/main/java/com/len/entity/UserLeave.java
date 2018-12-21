@@ -7,7 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "user_leave")
-public class UserLeave extends BaseTask {
+public class UserLeave extends BaseTask implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,generator = "JDBC")

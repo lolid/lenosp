@@ -31,7 +31,7 @@ public class JsonTest {
     // 当然也可以是其他的key 1为上面id的值
     map.put("1",map1);
     //node 绑定属性的id
-   String s= reType.jsonStrng(5,leaves,map,"id");
+   String s= reType.jsonString(5,leaves,map,"id");
    System.out.println(s);
   }
 }
