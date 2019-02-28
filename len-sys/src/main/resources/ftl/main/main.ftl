@@ -52,7 +52,7 @@
       </li>
       <li class="layui-nav-item">
         <a href="javascript:;">
-        <#assign currentUser = Session["curentUser"]>
+        <#assign currentUser = Session["currentUser"]>
           <img src="${re.contextPath}/images/${currentUser.photo}" class="layui-nav-img">${currentUser.username}
         </a>
         <dl class="layui-nav-child">

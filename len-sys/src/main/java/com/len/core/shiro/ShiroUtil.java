@@ -20,7 +20,7 @@ public class ShiroUtil {
         return getSubject().getSession();
     }
     public static CurrentUser getCurrentUse(){
-        return (CurrentUser) getSession().getAttribute("curentUser");
+        return (CurrentUser) getSession().getAttribute("currentUser");
     }
 
 }
