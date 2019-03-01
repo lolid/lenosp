@@ -42,9 +42,9 @@
             </div>
         </div>
         <div  class="layui-inline">
-            <label class="layui-form-label" style="width:40px;padding: 9px 0px;">验证码&nbsp;</label>
+            <label class="layui-form-label" style="width:60px;padding: 9px 0px;">验证码&nbsp;</label>
                <div class="layui-input-inline">
-                     <input type="text" name="code" style="width:190px;height:35px;" autocomplete="off" lay-verify="code"   class="layui-input">
+                     <input type="text" name="code" style="width:150px;height:35px; text-align: left" autocomplete="off" lay-verify="code"   class="layui-input">
               </div>
             <div class="layui-input-inline">
                 <img src="" id="code">

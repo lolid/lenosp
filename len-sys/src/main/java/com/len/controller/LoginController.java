@@ -167,7 +167,7 @@ public class LoginController {
             HttpSession session = request.getSession(true);
             session.setAttribute("_code", verifyCode.toLowerCase());
             //生成图片
-            int w = 70, h = 31;
+            int w = 90, h = 32;
             VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
         } catch (Exception e) {
             e.printStackTrace();
